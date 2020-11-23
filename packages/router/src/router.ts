@@ -18,7 +18,7 @@ import { FoundRoute } from './found-route.js';
 import { HookManager, IHookDefinition, HookIdentity, HookFunction, IHookOptions, BeforeNavigationHookFunction, TransformFromUrlHookFunction, TransformToUrlHookFunction, SetTitleHookFunction } from './hook-manager.js';
 import { Scope, IScopeOwner } from './scope.js';
 import { IViewportScopeOptions, ViewportScope } from './viewport-scope.js';
-import { BrowserViewerStore } from './browser-viewer-store.js';
+import { BrowserNavigator } from './browser-navigator.js';
 import { Navigation } from './navigation.js';
 import { IConnectedCustomElement } from './resources/viewport.js';
 import { NavigationCoordinator } from './navigation-coordinator.js';
@@ -99,7 +99,7 @@ class ClosestViewportCustomElement { }
 class ClosestScope { }
 
 export class Router implements IRouter {
-  public static readonly inject: readonly Key[] = [IContainer, Navigator, BrowserViewerStore, LinkHandler, InstructionResolver, HookManager, RouterOptions];
+  public static readonly inject: readonly Key[] = [IContainer, Navigator, BrowserNavigator, LinkHandler, InstructionResolver, HookManager, RouterOptions];
 
   public rootScope: ViewportScope | null = null;
 
@@ -167,7 +167,7 @@ export class Router implements IRouter {
      */
     public navigator: Navigator,
 
-    public navigation: BrowserViewerStore,
+    public navigation: BrowserNavigator,
     /**
      * @internal - Shouldn't be used directly.
      */
@@ -679,7 +679,11 @@ export class Router implements IRouter {
     // this.updateNav();
 
     // Remove history entry if no history viewports updated
-    if (instruction.navigation!.new && !instruction.navigation!.first && !instruction.repeating && updatedScopeOwners.every(viewport => viewport.options.noHistory)) {
+    if (instruction.navigation!.new
+      && !instruction.navigation!.first
+      && !instruction.repeating
+      && updatedScopeOwners.every(viewport => viewport.options.noHistory)
+    ) {
       instruction.untracked = true;
     }
     // updatedScopeOwners.forEach((viewport) => {

@@ -33,6 +33,9 @@ export interface IStoredNavigation {
   data?: Record<string, unknown>;
 }
 
+/**
+ * A data class carrying navigation data for browser and history
+ */
 export class Navigation {
   public navigation: INavigationFlags;
   public previous?: Navigation;

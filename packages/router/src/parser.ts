@@ -24,7 +24,7 @@ export function parseQuery(query: string | null | undefined): Record<string, str
   }
   const parameters: Record<string, string> = {};
   // TODO: Deal with complex parameters such as lists and objects
-  const params: string[] = query.replace('+', ' ').split('&');
+  const params: string[] = query.replace(/\+/g, ' ').split('&');
   for (const param of params) {
     const [key, value] = param.split('=');
     parameters[decodeURIComponent(key)] = decodeURIComponent(value !== void 0 ? value : key);
